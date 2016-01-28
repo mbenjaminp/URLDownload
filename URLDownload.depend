@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1453997256 source:c:\users\benje\documents\github\urldownload\main.cpp
+	<stdio.h>
+	<string>
+	<iostream>
+	<fstream>
+	<urlmon.h>
+
