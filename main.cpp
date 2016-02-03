@@ -5,7 +5,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <urlmon.h>
+#include <urlmon.h>    //needs urlmon.lib or liburlmon.a (MinGW)!
+
 
 
 /*
@@ -20,6 +21,7 @@ int main(int argc, char* argv[])
     std::ofstream writeaccesstest;
     std::string actualURL;
     std::string filename;
+    int unnamedfilecounter = 0;
 
 
     //Tests if the Path from the URLfile is given as Parameter
@@ -54,13 +56,20 @@ int main(int argc, char* argv[])
     //reading URLs
     while(readURL.good())
     {
+        //reads URLs, one per line
         std::getline(readURL, actualURL);
-        //reads the Filename from the URL
+        //reads the Filename from the URL (it´s supposed that the filename is given after the last "/" in the URL)
         filename = actualURL.substr(actualURL.find_last_of("/") + 1);
+        //prevents empty filenames, when the filename can´t be read with the method above
+        if(filename == "")
+        {
+            filename = "Unnamed" + std::to_string(unnamedfilecounter);
+            unnamedfilecounter++;
+        }
         //trying to download file from given actualURL
         if(URLDownloadToFileA(NULL, actualURL.c_str(), filename.c_str(), 0, NULL) != S_OK)
         {
-            std::cout << "Error at downloading " << filename << "from URL: " << actualURL << "\n\n";
+            std::cout << "Error at downloading " << filename << " from URL: " << actualURL << "\n\n";
         }
     }
 
